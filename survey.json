@@ -1,0 +1,19 @@
+[
+        {
+            "question": "Are you lefty or righty?",
+            "options": ["lefty", "righty", "both"]
+        },
+        {
+            "question": "Do you wear spectacles?",
+            "options": ["yes", "no"]
+        },
+
+        {
+            "question": "Are you married?",
+            "options": ["yes", "no"]
+        },
+        {
+            "question": "How do you commute to office?",
+            "options": ["bike", "car", "bus", "none"]
+        }
+]

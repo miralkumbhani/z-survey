@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Demographic Survey</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="row ribbon">
+        <span id="content">Survey</span>
+    </div>
+    <div class="form mt-5">
+        <form>
+            <div class="form-group row">
+                <label class="col-12 col-form-label label text-center mt-2">
+                    <h3>Form Details</h3></label>
+            </div>
+            <div class="form-group row">
+                <label for="name" class="col-sm-2 col-form-label label mt-3 ml-5">Name:</label>
+                <div class="col-sm-7 mt-3">
+                    <input type="text" class="form-control input-border ml-2" id="name" placeholder="John Doe" autofocus>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="age" class="col-sm-2 col-form-label label ml-5">Age:</label>
+                <div class="col-sm-7">
+                    <input type="number" class="form-control input-border ml-2" id="age" placeholder="25">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="gender" class="col-sm-2 col-form-label label ml-5">Gender:</label>
+                <div class="col-sm-7">
+                    <select class="form-control input-border ml-2" id="gender">
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+            </div>
+            <div class="button">
+                <button class="btn btn-info col-md-6" type="button" onclick="_demo.init()">Start</button>
+            </div>
+        </form>
+    </div>
+    <div class="main">
+        <div class="progress progress-bar-margin">
+            <div class="progress-bar progress-bar-striped bg-info" id="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div class="survey-container">
+            <div class="question row mt-3 mb-5 ml-4">
+                <div class="banner mt-4">
+                    <span class="mt-5 mb-3 pl-4" id="quesnum"></span>
+                    <span class="mt-5 mb-3 pl-3" id="question"></span>
+                </div>
+            </div>
+            <div class="options-container">
+                <div class="option row mt-3 mb-4" id="options"></div>
+            </div>
+        </div>
+        <hr class="line">
+        <div class="buttons row">
+            <button class="btn btn-info col-sm-3 mt-3 mr-5" type="button" id="next" onclick="_demo.display()">Next</button>
+            <button class="btn btn-info col-sm-3 mt-3 ml-5" type="button" onclick="_demo.display()">Skip</button>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+    <script src="background.js"></script>
+</body>
+
+</html>

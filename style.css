@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css?family=Arimo');
+
+body{
+    background-color: #e3c1a4;
+}
+
+/* for ribbon */
+
+.ribbon {
+    padding: .34em 1em;
+    margin-left: 550px;
+    margin-top: 2%;
+    position: relative;
+    color: #ffffff;
+    font-size: 32px;
+    text-align: center;
+    letter-spacing: 0.1em;
+    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0px 1px 0px rgba(255, 255, 255, .3),
+    inset 0px 0px 20px rgba(0, 0, 0, 0.1),
+    0px 1px 1px rgba(0, 0, 0, 0.4);
+    background: -webkit-linear-gradient(top, #1eb2df, #17a7d2);
+    display: inline-block;
+}
+
+.ribbon:before,
+.ribbon:after {
+    content: "";
+    width: .2em;
+    bottom: -.5em;
+    position: absolute;
+    display: block;
+    border: .9em solid #1eb2df;
+    box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.4);
+    z-index: -2;
+}
+
+.ribbon:before {
+    left: -1.15em;
+    border-right-width: .75em;
+    border-left-color: transparent;
+}
+
+.ribbon:after {
+    right: -1.15em;
+    border-left-width: .75em;
+    border-right-color: transparent;
+}
+
+#content:before,
+#content:after {
+    content: "";
+    bottom: -.5em;
+    position: absolute;
+    display: block;
+    border-style: solid;
+    border-color: #0675b3 transparent transparent transparent;
+    z-index: -1;
+}
+
+#content:before {
+    left: 0;
+    border-width: .5em 0 0 .5em;
+}
+
+#content:after {
+    right: 0;
+    border-width: .5em .5em 0 0;
+}
+
+.form {
+    background-color: #312c32;
+    height: 450px;
+    width: 400px;
+    margin-left: 440px;
+    border: 2px solid #000;
+    outline: 2px dashed #daad86;
+    outline-offset: -10px;
+}
+
+.label {
+    color: #1eb2df;
+    font-size: 19px;
+    font-weight: bold;
+}
+
+.input-border {
+    border-color: #c8844a;
+}
+
+.button {
+    margin: 60px 0px 0px 140px;
+}
+
+.progress-bar-margin {
+    width: 60%;
+    margin: 90px 0px 0px 250px;
+}
+
+.survey-container{
+     animation-delay: 2s;
+     animation: ease-in;
+}
+
+/*for banner-design in the question*/
+
+.banner{
+    width: 700px;
+    background-color: #312c32;
+    background-image: -moz-linear-gradient(top, #312c32, #312c32);
+    position: relative;
+    padding: 10px;
+    border-radius: 3px;
+    box-shadow: 0px 0px 20px #999;
+    border: 1px solid #333;
+    text-shadow: 0 0 1px #000;
+    margin-left: 270px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #1eb2df;
+}
+
+.option{
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 21px;
+}
+
+.options-container{
+    margin-left: 500px;
+}
+
+.line{
+    width: 25%;
+    margin-top: 90px;
+    padding: 0;
+    border: none;
+    border-top: medium double #312c32;
+    color: #312c32;
+    text-align: center
+}
+
+.line::after{
+    content: "§";
+    display: inline-block;
+    position: relative;
+    top: -0.7em;
+    font-size: 1.5em;
+    padding: 0 0.25em;
+}
+
+.buttons {
+    margin: 10px 0px 0px 350px;
+}
+
+.option-text{
+    text-transform: capitalize;
+}
