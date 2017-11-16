@@ -1,28 +1,42 @@
 (function() {
     'use strict';
 
-    $(function () {
+    localStorage.clear();
+    $(function() {
         $("#survey-block, #complete, #finish").hide();
         $('#start').on('click', function() {
+             _demo.storeData();
             // console.log('click on start');
             _demo.init();
         });
 
-        $('.proceed').on('click', function (){
+        $('.proceed').on('click', function() {
             // console.log('click on next, skip');
+            _demo.storeData();
             _demo.display();
         });
 
-        $('#finish').on('click', function () {
+        $('#finish').on('click', function() {
             // console.log('click on finish');
+            _demo.storeData();
             _demo.finalMessage();
         });
+
+        $(document).on('click',':radio', function(){
+            let checked = $(this).prop("checked");
+            console.log("CHECK RADIO", checked);
+            if(checked) {
+                $('#skip').prop("disabled", true);
+                $('#next').prop("disabled", false);
+            }
+        });
+
     });
 
     const _demo = {
 
         //function displays the main class and loads data for use
-        init: function () {
+        init: function() {
             $("#welcome").hide();
             $("#survey-block").show();
             this.num = 0;
@@ -50,6 +64,8 @@
 
         //function uses dataList and displays the questions and options
         display: function() {
+            $('#next').prop("disabled", true);
+            $('#skip').prop("disabled", false);
 
             this.setProgressBar(this.num);
             let question = this.dataList[this.num].question;
@@ -57,6 +73,7 @@
 
             this.num = this.num + 1;
 
+            // for last question
             if (this.num === this.len) {
                 $(".button-group").hide();
                 $("#finish").show();
@@ -68,7 +85,8 @@
         },
 
         //function sets the radio buttons of options for questions
-        //@returns string of options for each question for HTML
+        // @param array of options eg. ['yes, 'no];
+        //@return string of options for each question for HTML
         getOptions: function(options) {
             let radio = '';
             $(options).each(function(index, value) {
@@ -94,6 +112,31 @@
         finalMessage: function() {
             $("#survey-block").hide();
             $("#complete").show();
+        },
+
+        storeData: function() {
+            // console.log(this.num);
+            // console.log($("input[name='radio']:checked").val());
+            // let userName = $("input")
+            //for basic details
+            let userName = $("input[type=text][name=name]").val();
+            let userAge = $("input[type=number][name=age]").val();
+            let userGender = $("select[name=gender]").val();
+
+            console.log(userName, userAge, userGender);
+            localStorage.setItem(userName, JSON.stringify({name: userName, age: userAge, gender: userGender}));
+
+            //for question-options
+            let checkedOption = $(":radio:checked").val();
+            console.log("checkedOption", checkedOption);
+            if(typeof checkedOption === "undefined"){
+                console.log("its undefined");
+            } else {
+                console.log("its defined");
+                // let storedOption = {ques: this.num, ans: checkedOption};
+                localStorage.setItem(this.num, checkedOption);
+            }
+
         }
     };
 
