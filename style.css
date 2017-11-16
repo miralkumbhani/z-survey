@@ -1,14 +1,19 @@
 @import url('https://fonts.googleapis.com/css?family=Arimo');
 
-body{
+body {
     background-color: #e3c1a4;
 }
+
+.font-color {
+    color: #1eb2df;
+}
+
 
 /* for ribbon */
 
 .ribbon {
     padding: .34em 1em;
-    margin-left: 550px;
+    margin: auto;
     margin-top: 2%;
     position: relative;
     color: #ffffff;
@@ -68,14 +73,15 @@ body{
     border-width: .5em .5em 0 0;
 }
 
-.form {
+.message {
     background-color: #312c32;
-    height: 450px;
-    width: 400px;
-    margin-left: 440px;
+    margin: auto;
     border: 2px solid #000;
     outline: 2px dashed #daad86;
     outline-offset: -10px;
+    box-shadow: 3px 3px 5px 6px #838084;
+    transition-timing-function: ease-in;
+    border-color: #c8844a;
 }
 
 .label {
@@ -84,63 +90,23 @@ body{
     font-weight: bold;
 }
 
-.input-border {
-    border-color: #c8844a;
+
+.progress-bar {
+    height: 22px;
 }
 
-.button {
-    margin: 60px 0px 0px 140px;
-}
-
-.progress-bar-margin {
-    width: 60%;
-    margin: 90px 0px 0px 250px;
-}
-
-.survey-container{
-     animation-delay: 2s;
-     animation: ease-in;
-}
-
-/*for banner-design in the question*/
-
-.banner{
-    width: 700px;
-    background-color: #312c32;
-    background-image: -moz-linear-gradient(top, #312c32, #312c32);
-    position: relative;
-    padding: 10px;
-    border-radius: 3px;
-    box-shadow: 0px 0px 20px #999;
-    border: 1px solid #333;
-    text-shadow: 0 0 1px #000;
-    margin-left: 270px;
+.font-20 {
     font-size: 20px;
-    font-weight: bold;
-    color: #1eb2df;
 }
 
-.option{
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 21px;
-}
-
-.options-container{
-    margin-left: 500px;
-}
-
-.line{
+.line {
     width: 25%;
-    margin-top: 90px;
-    padding: 0;
     border: none;
     border-top: medium double #312c32;
     color: #312c32;
-    text-align: center
 }
 
-.line::after{
+.line::after {
     content: "§";
     display: inline-block;
     position: relative;
@@ -149,10 +115,6 @@ body{
     padding: 0 0.25em;
 }
 
-.buttons {
-    margin: 10px 0px 0px 350px;
-}
-
-.option-text{
+.option-text {
     text-transform: capitalize;
 }

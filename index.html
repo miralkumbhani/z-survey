@@ -11,67 +11,73 @@
 </head>
 
 <body>
-    <div class="row ribbon">
-        <span id="content">Survey</span>
+    <div class="row">
+        <div class="ribbon mb-3">
+            <span id="content">Survey</span>
+        </div>
     </div>
-    <div class="form mt-5">
+    <div class="message container mt-5 py-5 col-md-6" id="welcome">
+        <h3>Basic Details</h3>
         <form>
             <div class="form-group row">
-                <label class="col-12 col-form-label label text-center mt-2">
-                    <h3>Form Details</h3></label>
-            </div>
-            <div class="form-group row">
-                <label for="name" class="col-sm-2 col-form-label label mt-3 ml-5">Name:</label>
-                <div class="col-sm-7 mt-3">
-                    <input type="text" class="form-control input-border ml-2" id="name" placeholder="John Doe" autofocus>
+                <label for="name" class="offset-sm-2 col-sm-2 col-form-label label">Name:</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control input-border" id="name" name="name" placeholder="John Doe" autofocus >
                 </div>
             </div>
             <div class="form-group row">
-                <label for="age" class="col-sm-2 col-form-label label ml-5">Age:</label>
-                <div class="col-sm-7">
-                    <input type="number" class="form-control input-border ml-2" id="age" placeholder="25">
+                <label for="age" class="offset-sm-2 col-sm-2 col-form-label label">Age:</label>
+                <div class="col-sm-6">
+                    <input type="number" class="form-control input-border" id="age" name="age" placeholder="25" min="10" max="100">
                 </div>
             </div>
             <div class="form-group row">
-                <label for="gender" class="col-sm-2 col-form-label label ml-5">Gender:</label>
-                <div class="col-sm-7">
-                    <select class="form-control input-border ml-2" id="gender">
-                        <option>Male</option>
-                        <option>Female</option>
-                        <option>Other</option>
+                <label for="gender" class="offset-sm-2 col-sm-2 col-form-label label">Gender:</label>
+                <div class="col-sm-6">
+                    <select class="form-control input-border" id="gender">
+                        <option value="m">Male</option>
+                        <option value="f">Female</option>
                     </select>
                 </div>
             </div>
-            <div class="button">
-                <button class="btn btn-info col-md-6" type="button" onclick="_demo.init()">Start</button>
+            <div class="text-center col-sm-12">
+                <button role="button" class="btn btn-info col-sm-3 mt-5 ml-3" type="button" title="Start" id="start">Start</button>
             </div>
         </form>
     </div>
-    <div class="main">
-        <div class="progress progress-bar-margin">
-            <div class="progress-bar progress-bar-striped bg-info" id="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="col-sm-12 px-0 mt-5" id="survey-block">
+        <div class="col-sm-8 mx-auto">
+            <div class="progress mx-auto mb-4">
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" id="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
         </div>
-        <div class="survey-container">
-            <div class="question row mt-3 mb-5 ml-4">
-                <div class="banner mt-4">
-                    <span class="mt-5 mb-3 pl-4" id="quesnum"></span>
-                    <span class="mt-5 mb-3 pl-3" id="question"></span>
+        <div class="card col-sm-8 px-0 mx-auto">
+            <div class="card-header">
+                <h4 class="card-title mb-0">Question&nbsp;<span id="quesno"></span><span class="mt-5 mb-4 pl-3 font-color" id="question"></span></h4>
+            </div>
+            <div class="card-body">
+                <div class="form-check form-check-inline col-12 text-center">
+                    <div class="font-20 mx-auto text-center my-3" id="options"></div>
                 </div>
             </div>
-            <div class="options-container">
-                <div class="option row mt-3 mb-4" id="options"></div>
-            </div>
         </div>
-        <hr class="line">
-        <div class="buttons row">
-            <button class="btn btn-info col-sm-3 mt-3 mr-5" type="button" id="next" onclick="_demo.display()">Next</button>
-            <button class="btn btn-info col-sm-3 mt-3 ml-5" type="button" onclick="_demo.display()">Skip</button>
+        <hr class="line mt-5 text-center">
+        <div class="button-group col-12 text-center mx-auto">
+            <button role="button" class="btn btn-info col-sm-2 mt-3 mr-5 proceed" type="button" title="Skip">Skip</button>
+            <button role="button" class="btn btn-info col-sm-2 mt-3 ml-5 proceed" type="button" title="Next">Next</button>
         </div>
+        <div class="finish-button mt-4 text-center col-12" >
+            <button role="button" class="finish btn btn-info col-sm-2" type="button" id="finish" title="Finish">Finish</button>
+        </div>
+    </div>
+    <div class="message mt-5 mb-5 col-md-8" id="complete">
+        <h1 class="text-center my-5 py-5 font-color">Thank You. Your responses have been recorded.</h1>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
-    <script src="background.js"></script>
+    <!-- <script src="background.js"></script> -->
+    <script src="first.js"></script>
 </body>
 
 </html>
