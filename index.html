@@ -72,8 +72,15 @@
             <button role="button" class="finish btn btn-info col-sm-2" type="button" id="finish" title="Finish">Finish</button>
         </div>
     </div>
-    <div class="message mt-5 mb-5 col-md-8" id="complete">
-        <h1 class="text-center my-5 py-5 font-color">Thank You. Your responses have been recorded.</h1>
+    <div id="complete">
+        <div class="message mt-5 mb-5 col-md-8">
+            <h1 class="text-center my-5 py-5 font-color">Thank You. Your responses have been recorded.</h1>
+        </div>
+        <div class="message col-md-8">
+            <h4 class="font-color py-3 text-center">Your responses are as below:</h4>
+            <p class="font-color col-md-1 py-2" id="uname"></p>
+            <p id="choices"></p>
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>

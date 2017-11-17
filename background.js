@@ -2,10 +2,11 @@
     'use strict';
 
     localStorage.clear();
+    let choicesArray = [];
     $(function() {
         $("#survey-block, #complete, #finish").hide();
         $('#start').on('click', function() {
-             _demo.storeData();
+            _demo.storeData();
             // console.log('click on start');
             _demo.init();
         });
@@ -22,10 +23,10 @@
             _demo.finalMessage();
         });
 
-        $(document).on('click',':radio', function(){
+        $(document).on('click', ':radio', function() {
             let checked = $(this).prop("checked");
-            console.log("CHECK RADIO", checked);
-            if(checked) {
+            // console.log("CHECK RADIO", checked);
+            if (checked) {
                 $('#skip').prop("disabled", true);
                 $('#next').prop("disabled", false);
             }
@@ -115,29 +116,56 @@
         },
 
         storeData: function() {
-            // console.log(this.num);
-            // console.log($("input[name='radio']:checked").val());
-            // let userName = $("input")
             //for basic details
-            let userName = $("input[type=text][name=name]").val();
-            let userAge = $("input[type=number][name=age]").val();
-            let userGender = $("select[name=gender]").val();
+            let userName = $("#name").val();
+            let userAge = $("#age").val();
+            let userGender = $("#gender").val();
 
-            console.log(userName, userAge, userGender);
-            localStorage.setItem(userName, JSON.stringify({name: userName, age: userAge, gender: userGender}));
+            localStorage.setItem("userdetails", JSON.stringify({ name: userName, age: userAge, gender: userGender }));
 
             //for question-options
             let checkedOption = $(":radio:checked").val();
-            console.log("checkedOption", checkedOption);
-            if(typeof checkedOption === "undefined"){
+            // console.log("checkedOption", checkedOption);
+            if (typeof checkedOption === "undefined") {
                 console.log("its undefined");
             } else {
                 console.log("its defined");
-                // let storedOption = {ques: this.num, ans: checkedOption};
-                localStorage.setItem(this.num, checkedOption);
-            }
+                // console.log("CHECK", finalArray);
+                // let demo = [this.num + i];
+                // console.log("CHECKKKK", demo);
+                // console.log("this.num", this.num);
+                // let val = this.num;
+                // console.log("THIS.NUM", val);
+                choicesArray.push({
+                    [this.num]: checkedOption
+                });
 
+                console.log(choicesArray);
+                localStorage.setItem("choices", JSON.stringify(choicesArray));
+
+                let details = JSON.parse(localStorage.getItem("userdetails"));
+                console.log(details.name);
+                $("#uname").html(details.name);
+
+                let selectedObj = JSON.parse(localStorage.getItem("choices"));
+                console.log(selectedObj);
+                selectedObj.map((i, id) => {
+                    console.log(Object.keys(i)); //will give question no 1,2,3...
+                    console.log("CHECK", Object.values(i, id)); //gives keys and values
+                    console.log(Object.values(i));
+                });
+
+                // console.log("CHECKKK",[this.num]);
+
+                // console.log(this.num);
+                // console.log("CHECK", selectedObj[this.num]);
+                // console.log("CHECK THISSs", selectedObj[].checkedOption);
+                // $("#choices").html(selectedObj.checkedOption);
+                // $("#choices").html(selectedArray[j]);
+
+            }
         }
+
     };
 
 })();
