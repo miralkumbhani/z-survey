@@ -2,25 +2,30 @@
     'use strict';
 
     localStorage.clear();
-    let choicesArray = [];
+    let choiceArray = [];
     $(function() {
-        $("#survey-block, #complete, #finish").hide();
-        $('#start').on('click', function() {
-            _demo.storeData();
-            // console.log('click on start');
-            _demo.init();
-        });
+        $("#survey-data, #final-output, #finish").hide();
 
         $('.proceed').on('click', function() {
             // console.log('click on next, skip');
-            _demo.storeData();
-            _demo.display();
-        });
-
-        $('#finish').on('click', function() {
-            // console.log('click on finish');
-            _demo.storeData();
-            _demo.finalMessage();
+            let button_id = this.id;
+            console.log("button-id", button_id);
+            switch (button_id) {
+                 case 'start':
+                    _demo.init();
+                    break;
+                case 'next':
+                    _demo.storeData();
+                    break;
+                case 'finish':
+                    _demo.storeData();
+                    _demo.finalMessage();
+                    break;
+                case 'skip':
+                default:
+                    // console.log("start button is clicked!");
+                    _demo.display();
+            }
         });
 
         $(document).on('click', ':radio', function() {
@@ -35,25 +40,29 @@
     });
 
     const _demo = {
-
         //function displays the main class and loads data for use
         init: function() {
+            console.log("init function is called");
+            // console.log("init function is called");
             $("#welcome").hide();
-            $("#survey-block").show();
+            $("#survey-data").show();
             this.num = 0;
             this.fetchData().then((result) => {
-                this.dataList = result;
-                this.len = this.dataList.length;
+                console.log("result", result);
+                this.surveyList = result;
+                console.log("check survey list", this.surveyList);
+                this.len = this.surveyList.length;
                 this.display();
             }).catch((err) => {
                 console.error("Rejected", err);
             });
         },
 
-
         //function that fetches data from JSON
         //@returns object {question, [options]}
         fetchData: function() {
+            console.log("fetch data function is called");
+            console.log("inside fetchData()", this.num);
             return new Promise((resolve, reject) => {
                 $.getJSON("./survey.json").done((data) => {
                     resolve(data);
@@ -63,26 +72,32 @@
             });
         },
 
-        //function uses dataList and displays the questions and options
-        display: function() {
-            $('#next').prop("disabled", true);
-            $('#skip').prop("disabled", false);
+        //function for storing the data in local storage
+        storeData: function() {
+            console.log("store data is called");
+            //for basic details
+            let userName = $("#name").val();
+            let userAge = $("#age").val();
+            let userGender = $("#gender").val();
 
-            this.setProgressBar(this.num);
-            let question = this.dataList[this.num].question;
-            let options = this.dataList[this.num].options;
+            localStorage.setItem("userdetails", JSON.stringify({ name: userName, age: userAge, gender: userGender }));
 
-            this.num = this.num + 1;
+            //for question-options
+            let checkedOption = $(":radio:checked").val();
+            // console.log("checkedOption", checkedOption);
+            if (typeof checkedOption === "undefined") {
+                console.log("its undefined");
+            } else {
+                console.log("its defined");
+                // console.log(this.num);
+                choiceArray.push({
+                    [this.num]: checkedOption
+                });
+                // console.log(choiceArray);
 
-            // for last question
-            if (this.num === this.len) {
-                $(".button-group").hide();
-                $("#finish").show();
+                localStorage.setItem("choices", JSON.stringify(choiceArray));
+                console.log(choiceArray);
             }
-
-            $("#quesno").html(this.num);
-            $("#question").html(question);
-            $("#options").html(this.getOptions(options));
         },
 
         //function sets the radio buttons of options for questions
@@ -109,63 +124,47 @@
             });
         },
 
-        //function displays the final thank-you message
-        finalMessage: function() {
-            $("#survey-block").hide();
-            $("#complete").show();
+        //function uses surveyList and displays the questions and options
+        display: function() {
+            console.log("in display function");
+            console.log("this.surveyList in display()", this.surveyList);
+            $('#next').prop("disabled", true);
+            $('#skip').prop("disabled", false);
+
+            console.log("Check in display()", this.num);
+            this.setProgressBar(this.num);
+            let question = this.surveyList[this.num].question;
+            let options = this.surveyList[this.num].options;
+
+            this.num = this.num + 1;
+
+            // for last question
+            if (this.num === this.len) {
+                $(".button-group").hide();
+                $("#finish").show();
+            }
+
+            $("#ques-no").html(this.num);
+            $("#question").html(question);
+            $("#options").html(this.getOptions(options));
         },
 
-        storeData: function() {
-            //for basic details
-            let userName = $("#name").val();
-            let userAge = $("#age").val();
-            let userGender = $("#gender").val();
+        //function displays the final thank-you message and the recorded response
+        finalMessage: function() {
+            $("#survey-data").hide();
+            $("#final-output").show();
 
-            localStorage.setItem("userdetails", JSON.stringify({ name: userName, age: userAge, gender: userGender }));
+            let details = JSON.parse(localStorage.getItem("userdetails"));
+            // console.log(details.name);
+            $("#uname").html(details.name);
 
-            //for question-options
-            let checkedOption = $(":radio:checked").val();
-            // console.log("checkedOption", checkedOption);
-            if (typeof checkedOption === "undefined") {
-                console.log("its undefined");
-            } else {
-                console.log("its defined");
-                // console.log("CHECK", finalArray);
-                // let demo = [this.num + i];
-                // console.log("CHECKKKK", demo);
-                // console.log("this.num", this.num);
-                // let val = this.num;
-                // console.log("THIS.NUM", val);
-                choicesArray.push({
-                    [this.num]: checkedOption
-                });
+            let selectedObj = JSON.parse(localStorage.getItem("choices"));
 
-                console.log(choicesArray);
-                localStorage.setItem("choices", JSON.stringify(choicesArray));
-
-                let details = JSON.parse(localStorage.getItem("userdetails"));
-                console.log(details.name);
-                $("#uname").html(details.name);
-
-                let selectedObj = JSON.parse(localStorage.getItem("choices"));
-                console.log(selectedObj);
-                selectedObj.map((i, id) => {
-                    console.log(Object.keys(i)); //will give question no 1,2,3...
-                    console.log("CHECK", Object.values(i, id)); //gives keys and values
-                    console.log(Object.values(i));
-                });
-
-                // console.log("CHECKKK",[this.num]);
-
-                // console.log(this.num);
-                // console.log("CHECK", selectedObj[this.num]);
-                // console.log("CHECK THISSs", selectedObj[].checkedOption);
-                // $("#choices").html(selectedObj.checkedOption);
-                // $("#choices").html(selectedArray[j]);
-
+            for (let i = 0; i < selectedObj.length; i++) {
+                $("#ques").append(Object.keys(selectedObj[i]) + '&nbsp;&nbsp;' + Object.values(selectedObj[i]) + '<br>');
+                console.log("CHECK THIS", Object.values(selectedObj[i]));
             }
         }
-
     };
 
 })();

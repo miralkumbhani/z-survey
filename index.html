@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>Demographic Survey</title>
+    <script src="https://use.fontawesome.com/879fd00984.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -16,7 +17,7 @@
             <span id="content">Survey</span>
         </div>
     </div>
-    <div class="message container mt-5 py-5 col-md-6" id="welcome">
+    <div class="background container mt-5 py-5 col-md-6" id="welcome">
         <div class="text-center font-color mb-4">
             <h3 class="text-center font-color">Basic Details</h3>
         </div>
@@ -35,19 +36,25 @@
             </div>
             <div class="form-group row">
                 <label for="gender" class="offset-sm-2 col-sm-2 col-form-label label">Gender:</label>
-                <div class="col-sm-6">
-                    <select class="form-control input-border" id="gender" name="gender">
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </select>
+                <div class="col-sm-8">
+                    <label class="custom-control custom-radio form-label">
+                        <input id="gender-male" name="radio" type="radio" class="custom-control-input">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Male</span>
+                    </label>
+                    <label class="custom-control custom-radio form-label">
+                        <input id="gender-female" name="radio" type="radio" class="custom-control-input">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Female</span>
+                    </label>
                 </div>
             </div>
             <div class="text-center col-sm-12">
-                <button role="button" class="btn btn-info col-sm-3 mt-5 ml-3" type="button" title="Start" id="start">Start</button>
+                <button role="button" class="proceed btn btn-info col-sm-3 mt-5 ml-3" type="button" title="Start" id="start">Start&nbsp;&nbsp;<i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
             </div>
         </form>
     </div>
-    <div class="col-sm-12 px-0 mt-5" id="survey-block">
+    <div class="col-sm-12 px-0 mt-5" id="survey-data">
         <div class="col-sm-8 mx-auto">
             <div class="progress mx-auto mb-4">
                 <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" id="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
@@ -55,7 +62,7 @@
         </div>
         <div class="card col-sm-8 px-0 mx-auto">
             <div class="card-header">
-                <h4 class="card-title mb-0">Question&nbsp;<span id="quesno"></span><span class="mt-5 mb-4 pl-3 font-color" id="question"></span></h4>
+                <h4 class="card-title mb-0">Question&nbsp;<span id="ques-no"></span><span class="mt-5 mb-4 pl-3 font-color" id="question"></span></h4>
             </div>
             <div class="card-body">
                 <div class="form-check form-check-inline col-12 text-center">
@@ -65,21 +72,21 @@
         </div>
         <hr class="line mt-5 text-center">
         <div class="button-group col-12 text-center mx-auto">
-            <button role="button" class="btn btn-info col-sm-2 mt-3 mr-5 proceed" id="skip" type="button" title="Skip">Skip</button>
-            <button role="button" class="btn btn-info col-sm-2 mt-3 ml-5 proceed" id="next" type="button" title="Next">Next</button>
+            <button role="button" class="btn btn-secondary col-sm-2 mt-3 mr-5 proceed" id="skip" type="button" title="Skip">Skip</button>
+            <button role="button" class="btn btn-info col-sm-2 mt-3 ml-5 proceed" id="next" type="button" title="Next">Next&nbsp;&nbsp;<i class="fa fa-chevron-right" aria-hidden="true"></i></button>
         </div>
         <div class="finish-button mt-4 text-center col-12">
-            <button role="button" class="finish btn btn-info col-sm-2" type="button" id="finish" title="Finish">Finish</button>
+            <button role="button" class="proceed btn btn-info col-sm-2" type="button" id="finish" title="Finish">Finish</button>
         </div>
     </div>
-    <div id="complete">
-        <div class="message mt-5 mb-5 col-md-8">
+    <div id="final-output">
+        <div class="background mt-5 mb-5 col-md-8">
             <h1 class="text-center my-5 py-5 font-color">Thank You. Your responses have been recorded.</h1>
         </div>
-        <div class="message col-md-8">
-            <h4 class="font-color py-3 text-center">Your responses are as below:</h4>
-            <p class="font-color col-md-1 py-2" id="uname"></p>
-            <p id="choices"></p>
+        <div class="background col-md-8">
+            <h4 class="font-color py-3 text-center">Your responses are as below:</h4> NAME:
+            <p class="font-color font-20 col-md-1 py-2" id="uname"></p>
+            <div id="ques" class="font-20 font-color py-2"></div>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>

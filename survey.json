@@ -1,7 +1,7 @@
 [
         {
-            "question": "Are you lefty or righty?",
-            "options": ["lefty", "righty", "both"]
+            "question": "Which hand do you generally use? Are you?",
+            "options": ["left-handed", "right-handed", "ambidextrous"]
         },
         {
             "question": "Do you wear spectacles?",
@@ -15,5 +15,17 @@
         {
             "question": "How do you commute to office?",
             "options": ["bike", "car", "bus", "none"]
+        },
+        {
+            "question": "Are you employeed for?",
+            "options": ["job", "business", "freelancing", "none"]
+        },
+        {
+            "question": "What vehicle do you own?",
+            "options": ["scooter", "car", "bike", "bicycle"]
+        },
+        {
+            "question": "Did you vote in the last election?",
+            "options": ["yes", "no"]
         }
 ]

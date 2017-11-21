@@ -9,6 +9,7 @@ body {
 }
 
 
+
 /* for ribbon */
 
 .ribbon {
@@ -73,7 +74,7 @@ body {
     border-width: .5em .5em 0 0;
 }
 
-.message {
+.background {
     background-color: #312c32;
     margin: auto;
     border: 2px solid #000;
@@ -84,12 +85,21 @@ body {
     border-color: #c8844a;
 }
 
+.proceed:hover {
+    -webkit-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    transform: scale(1.2);
+}
+
 .label {
     color: #1eb2df;
     font-size: 19px;
     font-weight: bold;
 }
 
+.font-18{
+    font-size: 18px;
+}
 
 .progress-bar {
     height: 22px;
@@ -117,4 +127,15 @@ body {
 
 .option-text {
     text-transform: capitalize;
+}
+
+.form-label{
+    padding-left: 0.7rem;
+    font-size: 19px;
+    margin-bottom: 0px;
+    color: #1eb2df;
+}
+
+.custom-control-input{
+    position: relative;
 }
