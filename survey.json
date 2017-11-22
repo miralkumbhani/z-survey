@@ -1,7 +1,7 @@
 [
         {
             "question": "Which hand do you generally use? Are you?",
-            "options": ["left-handed", "right-handed", "ambidextrous"]
+            "options": ["left-handed", "right-handed", "ambidextrous (both-handed)"]
         },
         {
             "question": "Do you wear spectacles?",

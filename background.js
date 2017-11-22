@@ -2,20 +2,37 @@
     'use strict';
 
     localStorage.clear();
+
     let choiceArray = [];
+    let surveyList = [];
+    let len = 0;
+
     $(function() {
+
         $("#survey-data, #final-output, #finish").hide();
 
         $('.proceed').on('click', function() {
-            // console.log('click on next, skip');
+            //when no option is selected
+            $('#skip').prop("disabled", false);
+            $('#next').prop("disabled", true);
+
             let button_id = this.id;
-            console.log("button-id", button_id);
+            // console.log("button-id", button_id);
             switch (button_id) {
-                 case 'start':
-                    _demo.init();
+                case 'start':
+                    _demo.storeBasicDetail();
+                    _demo.fetchData().then((result) => {
+                        // console.log("Output of fetchData() (JSON)", result);
+                        surveyList = result;
+                        // console.log("surveyList after fetchData(), before display()", surveyList);
+                        len = surveyList.length;
+                        // console.log("len", len);
+                        _demo.display();
+                    });
                     break;
                 case 'next':
                     _demo.storeData();
+                    _demo.display();
                     break;
                 case 'finish':
                     _demo.storeData();
@@ -28,9 +45,11 @@
             }
         });
 
-        $(document).on('click', ':radio', function() {
+        $(document).on('click', 'input[name=options]', function() {
             let checked = $(this).prop("checked");
+            // console.log("this", this);
             // console.log("CHECK RADIO", checked);
+            //when any option is selected
             if (checked) {
                 $('#skip').prop("disabled", true);
                 $('#next').prop("disabled", false);
@@ -40,64 +59,69 @@
     });
 
     const _demo = {
-        //function displays the main class and loads data for use
-        init: function() {
-            console.log("init function is called");
-            // console.log("init function is called");
+        //function stores details entered by user in local storage
+        storeBasicDetail: function() {
+            console.log("storeDetails() is called");
             $("#welcome").hide();
             $("#survey-data").show();
             this.num = 0;
-            this.fetchData().then((result) => {
-                console.log("result", result);
-                this.surveyList = result;
-                console.log("check survey list", this.surveyList);
-                this.len = this.surveyList.length;
-                this.display();
-            }).catch((err) => {
-                console.error("Rejected", err);
-            });
+            var formElement = document.querySelector("form");
+            let fd = new FormData(formElement);
+
+            let basicDetail = {name: fd.get('name'), age: fd.get('age'), gender: fd.get('gender')};
+            // console.log(basicDetail);
+
+            localStorage.setItem("userdetails", JSON.stringify(basicDetail));
+            // console.log("data stored... endof storeData()");
         },
 
         //function that fetches data from JSON
         //@returns object {question, [options]}
         fetchData: function() {
-            console.log("fetch data function is called");
-            console.log("inside fetchData()", this.num);
+            // console.log("fetchData() is called");
             return new Promise((resolve, reject) => {
                 $.getJSON("./survey.json").done((data) => {
                     resolve(data);
                 }).fail(() => {
                     reject(false);
                 });
+            // console.log("JSON data sent... endof fetchdata()");
             });
         },
 
-        //function for storing the data in local storage
-        storeData: function() {
-            console.log("store data is called");
-            //for basic details
-            let userName = $("#name").val();
-            let userAge = $("#age").val();
-            let userGender = $("#gender").val();
+        //function to get question and answer after each click of Next/Skip Button
+        display: function() {
+            // console.log("display() is called");
 
-            localStorage.setItem("userdetails", JSON.stringify({ name: userName, age: userAge, gender: userGender }));
+            this.setProgressBar(this.num);
+            let question = surveyList[this.num].question;
+            // console.log("question", question);
+            let options = surveyList[this.num].options;
+            // console.log("options", options);
 
-            //for question-options
-            let checkedOption = $(":radio:checked").val();
-            // console.log("checkedOption", checkedOption);
-            if (typeof checkedOption === "undefined") {
-                console.log("its undefined");
-            } else {
-                console.log("its defined");
-                // console.log(this.num);
-                choiceArray.push({
-                    [this.num]: checkedOption
-                });
-                // console.log(choiceArray);
+            this.num = this.num + 1;
 
-                localStorage.setItem("choices", JSON.stringify(choiceArray));
-                console.log(choiceArray);
+            // for last question
+            if (this.num === len) {
+                // alert("Hide buttons");
+                $(".button-group").hide();
+                $("#finish").show();
             }
+
+            $("#ques-no").html(this.num);
+            $("#question").html(question);
+            $("#options").html(this.getOptions(options));
+
+            // console.log("ques-options displayed... endof display()");
+        },
+
+        //function sets the value for progress bar dynamically
+        //@returns number along with % for HTML to update the progress bar according to the question
+        setProgressBar: function(num) {
+            let cal = (num + 1) * (100 / len);
+            $("#progress-bar").css("width", function() {
+                return cal + '%';
+            });
         },
 
         //function sets the radio buttons of options for questions
@@ -107,7 +131,7 @@
             let radio = '';
             $(options).each(function(index, value) {
                 radio += `<label class="custom-control custom-radio col-md-2">
-                <input id="radio_${index}" name="radio" type="radio" value="${value}" class="custom-control-input cursor-radio">
+                <input id="radio_${index}" name="options" type="radio" value="${value}" class="custom-control-input cursor-radio">
                 <span class="custom-control-indicator"></span>
                 <span class="custom-control-description option-text">${value}</span>
                 </label>`;
@@ -115,42 +139,28 @@
             return radio;
         },
 
-        //function sets the value for progress bar dynamically
-        //@returns number along with % for HTML to update the progress bar according to the question
-        setProgressBar: function(num) {
-            let cal = (num + 1) * (100 / this.len);
-            $("#progress-bar").css("width", function() {
-                return cal + '%';
-            });
-        },
+        storeData: function() {
+            // console.log("storeData() is called");
+            //for question-options
+            let checkedOption = $("input[name=options]:checked").val();
+            // console.log("checkedOption", checkedOption);
 
-        //function uses surveyList and displays the questions and options
-        display: function() {
-            console.log("in display function");
-            console.log("this.surveyList in display()", this.surveyList);
-            $('#next').prop("disabled", true);
-            $('#skip').prop("disabled", false);
-
-            console.log("Check in display()", this.num);
-            this.setProgressBar(this.num);
-            let question = this.surveyList[this.num].question;
-            let options = this.surveyList[this.num].options;
-
-            this.num = this.num + 1;
-
-            // for last question
-            if (this.num === this.len) {
-                $(".button-group").hide();
-                $("#finish").show();
+            if (typeof checkedOption === "undefined") {
+                console.log("Checked option is undefined");
+            } else {
+                console.log("Checked option is defined");
+                choiceArray.push({
+                    [this.num]: checkedOption
+                });
             }
+            // console.log(choiceArray);
 
-            $("#ques-no").html(this.num);
-            $("#question").html(question);
-            $("#options").html(this.getOptions(options));
+            localStorage.setItem("choices", JSON.stringify(choiceArray));
         },
 
         //function displays the final thank-you message and the recorded response
         finalMessage: function() {
+            console.log("finalMessage() is called");
             $("#survey-data").hide();
             $("#final-output").show();
 
