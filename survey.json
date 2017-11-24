@@ -13,16 +13,16 @@
             "options": ["yes", "no"]
         },
         {
+            "question": "What vehicle do you own?",
+            "options": ["scooter", "car", "bike", "bicycle"]
+        },
+        {
             "question": "How do you commute to office?",
             "options": ["bike", "car", "bus", "none"]
         },
         {
-            "question": "Are you employeed for?",
-            "options": ["job", "business", "freelancing", "none"]
-        },
-        {
-            "question": "What vehicle do you own?",
-            "options": ["scooter", "car", "bike", "bicycle"]
+            "question": "Are you a permanent resident of this city?",
+            "options": ["yes", "no"]
         },
         {
             "question": "Did you vote in the last election?",

@@ -8,6 +8,11 @@ body {
     color: #1eb2df;
 }
 
+.font-select{
+    color: #e3c1a4;
+}
+
+
 /* for ribbon */
 
 .ribbon {
@@ -23,7 +28,7 @@ body {
     box-shadow: inset 0px 1px 0px rgba(255, 255, 255, .3),
     inset 0px 0px 20px rgba(0, 0, 0, 0.1),
     0px 1px 1px rgba(0, 0, 0, 0.4);
-    background: -webkit-linear-gradient(top, #1eb2df, #17a7d2);
+    background: -webkit-linear-gradient(top, #428bca, #1eb2df);
     display: inline-block;
 }
 
@@ -127,6 +132,10 @@ body {
     text-transform: capitalize;
 }
 
+.min-height{
+    min-height: 280px;
+}
+
 .form-label{
     padding-left: 0.7rem;
     font-size: 19px;
@@ -134,6 +143,6 @@ body {
     color: #1eb2df;
 }
 
-.custom-control-input{
+.gender{
     position: relative;
 }

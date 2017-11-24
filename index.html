@@ -21,24 +21,24 @@
         <div class="text-center font-color mb-4">
             <h3 class="text-center font-color">Basic Details</h3>
         </div>
-        <form name="basicForm" id="basicForm">
+        <form name="basicForm" id="basicForm" autocomplete="off">
             <div class="form-group row">
                 <label for="name" class="offset-sm-2 col-sm-2 col-form-label label">Name:</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control input-border" id="name" name="name" placeholder="John Doe" autofocus>
+                    <input type="text" class="form-control has-danger input-border" id="name" name="name" placeholder="John Doe" autofocus>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="age" class="offset-sm-2 col-sm-2 col-form-label label">Age:</label>
                 <div class="col-sm-6">
-                    <input type="number" class="form-control input-border" id="age" name="age" placeholder="25" min="10" max="100">
+                    <input type="number" class="form-control has-danger input-border" id="age" name="age" placeholder="25" min="10" max="100">
                 </div>
             </div>
             <div class="form-group row">
                 <label for="gender" class="offset-sm-2 col-sm-2 col-form-label label">Gender:</label>
                 <div class="col-sm-8">
-                    <label class="custom-control custom-radio form-label">
-                        <input name="gender" type="radio" value ="male" class="custom-control-input gender">
+                    <label class="custom-control custom-radio has-danger form-label">
+                        <input name="gender" type="radio" value="male" class="custom-control-input gender" checked>
                         <span class="custom-control-indicator"></span>
                         <span class="custom-control-description">Male</span>
                     </label>
@@ -50,7 +50,7 @@
                 </div>
             </div>
             <div class="text-center col-sm-12">
-                <button role="button" class="proceed btn btn-info col-sm-3 mt-5 ml-3" type="button" title="Start" id="start">Start&nbsp;&nbsp;<i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
+                <button role="button" class="proceed btn btn-primary col-sm-3 mt-5 ml-3" type="button" title="Start" id="start">Start&nbsp;&nbsp;<i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
             </div>
         </form>
     </div>
@@ -60,19 +60,21 @@
                 <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" id="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         </div>
+        <div class="min-height">
         <div class="card col-sm-8 px-0 mx-auto">
             <div class="card-header">
                 <h4 class="card-title mb-0">Question&nbsp;<span id="ques-no"></span><span class="mt-5 mb-4 pl-3 font-color" id="question"></span></h4>
             </div>
             <div class="card-body">
-                <div class="form-check form-check-inline col-12 text-center">
+                <div class="form-check form-check-inline col-12  text-center">
                     <div class="font-20 mx-auto text-center my-3" id="options"></div>
                 </div>
             </div>
         </div>
+    </div>
         <hr class="line mt-5 text-center">
         <div class="button-group col-12 text-center mx-auto">
-            <button role="button" class="btn btn-secondary col-sm-2 mt-3 mr-5 proceed" id="skip" type="button" title="Skip">Skip</button>
+            <button role="button" class="btn btn-secondary col-sm-2 mt-3 mr-5 proceed" id="skip" type="button" title="Skip">Skip&nbsp;&nbsp;<i class="fa fa-share" aria-hidden="true"></i></button>
             <button role="button" class="btn btn-info col-sm-2 mt-3 ml-5 proceed" id="next" type="button" title="Next">Next&nbsp;&nbsp;<i class="fa fa-chevron-right" aria-hidden="true"></i></button>
         </div>
         <div class="finish-button mt-4 text-center col-12">
@@ -81,12 +83,22 @@
     </div>
     <div id="final-output">
         <div class="background mt-5 mb-5 col-md-8">
-            <h1 class="text-center my-5 py-5 font-color">Thank You. Your responses have been recorded.</h1>
+            <h1 class="text-center my-5 py-4 font-color">Thank You. Your responses have been recorded.</h1>
         </div>
-        <div class="background col-md-8 font-color">
-            <h4 class="py-3 text-center">Your responses are as below:</h4>
-            NAME:<p class="font-20 col-md-1 py-2" id="uname"></p>
-            <div id="ques" class="font-20 font-color py-2"></div>
+        <div class="background col-md-8">
+            <h4 class="py-3 text-center font-color">Your responses are as below:</h4>
+            <div class="mx-auto text-center row">
+                <div class="col-sm-4">
+                    <label class="font-20 font-color"><b>NAME:</b></label><p class="py-2 font-18 font-select text-capitalize" id="uname"></p>
+                </div>
+                <div class="col-sm-4">
+                    <label class="font-20 font-color"><b>AGE:</b></label><p class="py-2 font-18 font-select" id="uage"></p>
+                </div>
+                <div class="col-sm-4">
+                    <label class="font-20 font-color"><b>GENDER:</b></label><p class="py-2 font-18 font-select text-capitalize" id="ugender"></p>
+                </div>
+            </div>
+            <div id="ques-ans" class="font-color font-20 py-2"></div>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>

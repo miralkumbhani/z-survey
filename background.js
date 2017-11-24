@@ -3,13 +3,48 @@
 
     localStorage.clear();
 
-    let choiceArray = [];
+    let choiceResult = [];
+    let skipResult = [];
     let surveyList = [];
     let len = 0;
 
     $(function() {
-
         $("#survey-data, #final-output, #finish").hide();
+        // $('#start').prop("disabled", true);
+
+        // $('#name, #age, .gender').change(function() {
+
+        //     if ($('#name').val() && $('#age').val() && $('input[name=gender]:checked').val() !== '') {
+        //         $('#start').prop("disabled", false);
+        //     } else {
+        //         $('#start').prop("disabled", true);
+        //     }
+        // });
+
+
+        // $('input').change(function() {
+        //     var formElement = document.querySelector("form");
+        //     let fd = new FormData(formElement);
+        //     let name, age, gender;
+        //     [name, age, gender] = [fd.get('name'), fd.get('age'), fd.get('gender')];
+        //     // console.log("Check details", name, age, gender);
+        //     // console.log("CHECK", name.trim().length());
+        //     if(name === ""){
+        //         console.log("details are incomplete");
+        //         // console.log(age, gender);
+        //         $('#start').prop("disabled", false);
+        //     } else {
+        //         $('#start').prop("disabled", true);
+        //     }
+        // });
+
+        // if(name && age && gender){
+        //     console.log("Values are null");
+        //     $('#start').prop("disabled", false);
+        // } else {
+        //     console.log("Values are not null");
+        //     $('#start').prop("disabled", true);
+        // }
 
         $('.proceed').on('click', function() {
             //when no option is selected
@@ -39,6 +74,9 @@
                     _demo.finalMessage();
                     break;
                 case 'skip':
+                    _demo.storeData();
+                    _demo.display();
+                    break;
                 default:
                     // console.log("start button is clicked!");
                     _demo.display();
@@ -61,14 +99,14 @@
     const _demo = {
         //function stores details entered by user in local storage
         storeBasicDetail: function() {
-            console.log("storeDetails() is called");
+            // console.log("storeDetails() is called");
             $("#welcome").hide();
             $("#survey-data").show();
             this.num = 0;
             var formElement = document.querySelector("form");
             let fd = new FormData(formElement);
 
-            let basicDetail = {name: fd.get('name'), age: fd.get('age'), gender: fd.get('gender')};
+            let basicDetail = { name: fd.get('name'), age: fd.get('age'), gender: fd.get('gender') };
             // console.log(basicDetail);
 
             localStorage.setItem("userdetails", JSON.stringify(basicDetail));
@@ -85,7 +123,7 @@
                 }).fail(() => {
                     reject(false);
                 });
-            // console.log("JSON data sent... endof fetchdata()");
+                // console.log("JSON data sent... endof fetchdata()");
             });
         },
 
@@ -130,7 +168,7 @@
         getOptions: function(options) {
             let radio = '';
             $(options).each(function(index, value) {
-                radio += `<label class="custom-control custom-radio col-md-2">
+                radio += `<label class="custom-control custom-radio col-sm-6">
                 <input id="radio_${index}" name="options" type="radio" value="${value}" class="custom-control-input cursor-radio">
                 <span class="custom-control-indicator"></span>
                 <span class="custom-control-description option-text">${value}</span>
@@ -147,33 +185,56 @@
 
             if (typeof checkedOption === "undefined") {
                 console.log("Checked option is undefined");
+                // console.log(this.num);
+                skipResult.push({
+                    [this.num]: 'N/A'
+                });
+                console.log("Pushed in array", skipResult);
             } else {
                 console.log("Checked option is defined");
-                choiceArray.push({
+                choiceResult.push({
                     [this.num]: checkedOption
                 });
             }
-            // console.log(choiceArray);
+            // console.log("CHECK", skipResult);
+            // console.log(choiceResult);
 
-            localStorage.setItem("choices", JSON.stringify(choiceArray));
+            localStorage.setItem("choices", JSON.stringify(choiceResult));
         },
 
         //function displays the final thank-you message and the recorded response
         finalMessage: function() {
-            console.log("finalMessage() is called");
+            // console.log("finalMessage() is called");
             $("#survey-data").hide();
             $("#final-output").show();
 
             let details = JSON.parse(localStorage.getItem("userdetails"));
-            // console.log(details.name);
-            $("#uname").html(details.name);
+            console.log("details", details);
 
-            let selectedObj = JSON.parse(localStorage.getItem("choices"));
+            $('#uname').html(details.name);
+            $('#uage').html(details.age);
+            $('#ugender').html(details.gender);
 
-            for (let i = 0; i < selectedObj.length; i++) {
-                $("#ques").append(Object.keys(selectedObj[i]) + '&nbsp;&nbsp;' + Object.values(selectedObj[i]) + '<br>');
-                console.log("CHECK THIS", Object.values(selectedObj[i]));
-            }
+            //array of object [{1: ""}, {2: ""}, ..]
+            let surveyResult = JSON.parse(localStorage.getItem("choices"));
+
+            let output = '';
+
+            // var finObj = Object.assign({}, ...skipResult, ...surveyResult);  //combines both the objects into one
+            // console.log("CHECK THIS fin", finObj);
+
+            // displays the ques no, quesiton and selected option
+            surveyResult.map(function(obj) {
+                let survey_question_number = Object.keys(obj);
+                let survey_question = surveyList[survey_question_number - 1].question;
+                let survey_answer = Object.values(obj);
+                output += `<dl>
+                                <dt>Question ${survey_question_number}.  ${survey_question}</dt>
+                                <dd class="font-select"><b>Answer:</b> ${survey_answer}</dd>
+                             </dl>`;
+                //     console.log("Final output", output);
+            });
+            $('#ques-ans').append(output);
         }
     };
 
