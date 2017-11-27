@@ -4,47 +4,24 @@
     localStorage.clear();
 
     let choiceResult = [];
-    let skipResult = [];
     let surveyList = [];
     let len = 0;
 
     $(function() {
         $("#survey-data, #final-output, #finish").hide();
-        // $('#start').prop("disabled", true);
+        $('#start').prop("disabled", true);
 
-        // $('#name, #age, .gender').change(function() {
-
-        //     if ($('#name').val() && $('#age').val() && $('input[name=gender]:checked').val() !== '') {
-        //         $('#start').prop("disabled", false);
-        //     } else {
-        //         $('#start').prop("disabled", true);
-        //     }
-        // });
-
-
-        // $('input').change(function() {
-        //     var formElement = document.querySelector("form");
-        //     let fd = new FormData(formElement);
-        //     let name, age, gender;
-        //     [name, age, gender] = [fd.get('name'), fd.get('age'), fd.get('gender')];
-        //     // console.log("Check details", name, age, gender);
-        //     // console.log("CHECK", name.trim().length());
-        //     if(name === ""){
-        //         console.log("details are incomplete");
-        //         // console.log(age, gender);
-        //         $('#start').prop("disabled", false);
-        //     } else {
-        //         $('#start').prop("disabled", true);
-        //     }
-        // });
-
-        // if(name && age && gender){
-        //     console.log("Values are null");
-        //     $('#start').prop("disabled", false);
-        // } else {
-        //     console.log("Values are not null");
-        //     $('#start').prop("disabled", true);
-        // }
+        $('input').change(function() {
+            var formElement = document.querySelector("form");
+            let fd = new FormData(formElement);
+            let name, age, gender;
+            [name, age, gender] = [fd.get('name'), fd.get('age'), fd.get('gender')];
+            if (name && age && gender) {
+                $('#start').prop("disabled", false);
+            } else {
+                $('#start').prop("disabled", true);
+            }
+        });
 
         $('.proceed').on('click', function() {
             //when no option is selected
@@ -74,9 +51,6 @@
                     _demo.finalMessage();
                     break;
                 case 'skip':
-                    _demo.storeData();
-                    _demo.display();
-                    break;
                 default:
                     // console.log("start button is clicked!");
                     _demo.display();
@@ -130,7 +104,6 @@
         //function to get question and answer after each click of Next/Skip Button
         display: function() {
             // console.log("display() is called");
-
             this.setProgressBar(this.num);
             let question = surveyList[this.num].question;
             // console.log("question", question);
@@ -185,19 +158,18 @@
 
             if (typeof checkedOption === "undefined") {
                 console.log("Checked option is undefined");
-                // console.log(this.num);
-                skipResult.push({
-                    [this.num]: 'N/A'
-                });
-                console.log("Pushed in array", skipResult);
             } else {
                 console.log("Checked option is defined");
+
                 choiceResult.push({
-                    [this.num]: checkedOption
+                    [this.num] : checkedOption
                 });
+
+                let finalRresult = Object.assign({}, ...choiceResult);
+                console.log("finalRresult", finalRresult);
             }
-            // console.log("CHECK", skipResult);
-            // console.log(choiceResult);
+            // console.log("CHECK ChoiceArray", choiceResult);
+            // console.log("CHECK key", choiceResult[0].question); //question-number
 
             localStorage.setItem("choices", JSON.stringify(choiceResult));
         },
@@ -209,32 +181,70 @@
             $("#final-output").show();
 
             let details = JSON.parse(localStorage.getItem("userdetails"));
-            console.log("details", details);
+            // console.log("details", details);
 
             $('#uname').html(details.name);
             $('#uage').html(details.age);
             $('#ugender').html(details.gender);
 
             //array of object [{1: ""}, {2: ""}, ..]
-            let surveyResult = JSON.parse(localStorage.getItem("choices"));
+            let surveyResultList = JSON.parse(localStorage.getItem("choices"));
 
-            let output = '';
-
-            // var finObj = Object.assign({}, ...skipResult, ...surveyResult);  //combines both the objects into one
-            // console.log("CHECK THIS fin", finObj);
-
-            // displays the ques no, quesiton and selected option
-            surveyResult.map(function(obj) {
-                let survey_question_number = Object.keys(obj);
-                let survey_question = surveyList[survey_question_number - 1].question;
-                let survey_answer = Object.values(obj);
-                output += `<dl>
-                                <dt>Question ${survey_question_number}.  ${survey_question}</dt>
-                                <dd class="font-select"><b>Answer:</b> ${survey_answer}</dd>
-                             </dl>`;
-                //     console.log("Final output", output);
+            // displays the ques no, question and selected option
+            let attempted_question_list = surveyResultList.map(function(obj) {
+                let attempted_ques = obj.question;
+                return attempted_ques;
             });
-            $('#ques-ans').append(output);
+            console.log("Attempted Question list array ", attempted_question_list);
+
+            // let mappedArray = surveyList.filter(function(obj){
+            //     // console.log(obj);
+            //     for(let key in obj){
+            //         console.log("CHECK THIS:", key);
+            //     }
+            // });
+
+            // for(let values of Object.keys(surveyList)) {
+            //     let ques = surveyList[values].question;
+            //     console.log("QUESTION IS:", ques); //gives list of all questions
+            // }
+
+            // for(attempted_question_list of Object.keys(surveyList)) {
+            //     // console.log("CHECKKKKKK", attempted_question_list);
+            //     let val = surveyList[attempted_question_list].question;
+            //     console.log("CHECCCCCCCKKKK", val); //gives list of all questions
+            // }
+
+            // for(let i = 0; i < surveyList.length; i++){
+            //     console.log("surveyList Question", surveyList[i].question);
+            //     console.log("Questionlist is", attempted_question_list[i]);
+            // }
+
+            // Object.keys(surveyList).forEach(function(val){
+            //     console.log("VAL", val);
+            //     // console.log("AQL", attempted_question_list[val]);
+            //     if(attempted_question_list === val){
+            //         console.log("BOTH ARE SAME", attempted_question_list, val);
+            //     }
+            // });
+
+            // for(let val in surveyResultList){
+            //     console.log("VAL", val);
+            //     let ques = surveyList[val].question;
+            //     console.log("CHECK QUESTION", ques);
+            // }
+
+            // for(let i = 0; i < attempted_question_list.length; i++){
+            //     let ques_no = attempted_question_list[i];
+            //     let ques = surveyList[ques_no - 1].question;
+            //     console.log("ques", ques);
+            // }
+
+            // let remaining_questions = attempted_question_list.filter(function(x){
+            //     console.log(x);
+            // });
+
+
         }
     };
 
