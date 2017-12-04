@@ -4,6 +4,7 @@
     localStorage.clear();
 
     let choiceResult = [], surveyList = [], attemptedQuesNumber = [], unattemptedQuesNumber = [], totalQuesNumber = [];
+    let user_name, user_age, user_gender;
     let len = 0;
 
     $(function() {
@@ -13,11 +14,10 @@
         $('input').change(() => {
             var formElement = document.querySelector("form");
             let fd = new FormData(formElement);
-            let name, age, gender;
 
-            [name, age, gender] = [fd.get('name'), fd.get('age'), fd.get('gender')];
+            [user_name, user_age, user_gender] = [fd.get('name'), fd.get('age'), fd.get('gender')];
 
-            if (name && age && gender) {
+            if (user_name && user_gender && user_gender) {
                 $('#start').prop("disabled", false);
             } else {
                 $('#start').prop("disabled", true);
@@ -72,10 +72,7 @@
             $("#survey-data").show();
             this.num = 0;
 
-            var formElement = document.querySelector("form");
-            let fd = new FormData(formElement);
-
-            let basicDetail = { name: fd.get('name'), age: fd.get('age'), gender: fd.get('gender') };
+            let basicDetail = { name: user_name, age: user_age, gender: user_gender };
             localStorage.setItem("userdetails", JSON.stringify(basicDetail));
         },
 
