@@ -3,11 +3,11 @@
 
     localStorage.clear();
 
-    let choiceResult = [];
-    let surveyList = [];
-    let attemptedQuesNumber = [];
-    let unattemptedQuesNumber = [];
-    let totalQuesNumber = [];
+    let choiceResult = [],
+        surveyList = [],
+        attemptedQuesNumber = [],
+        unattemptedQuesNumber = [],
+        totalQuesNumber = [];
     let len = 0;
 
     $(function() {
@@ -18,7 +18,9 @@
             var formElement = document.querySelector("form");
             let fd = new FormData(formElement);
             let name, age, gender;
+
             [name, age, gender] = [fd.get('name'), fd.get('age'), fd.get('gender')];
+
             if (name && age && gender) {
                 $('#start').prop("disabled", false);
             } else {
@@ -32,16 +34,12 @@
             $('#next').prop("disabled", true);
 
             let button_id = this.id;
-            // console.log("button-id", button_id);
             switch (button_id) {
                 case 'start':
                     _demo.storeBasicDetail();
                     _demo.fetchData().then((result) => {
-                        // console.log("Output of fetchData() (JSON)", result);
                         surveyList = result;
-                        // console.log("surveyList",surveyList);
                         len = surveyList.length;
-                        // console.log("len", len);
                         _demo.display();
                     });
                     break;
@@ -82,10 +80,7 @@
             let fd = new FormData(formElement);
 
             let basicDetail = { name: fd.get('name'), age: fd.get('age'), gender: fd.get('gender') };
-            // console.log(basicDetail);
-
             localStorage.setItem("userdetails", JSON.stringify(basicDetail));
-            // console.log("data stored... endof storeData()");
         },
 
         //function that fetches data from JSON
@@ -105,8 +100,9 @@
         display: function() {
             // console.log("display() is called");
             this.setProgressBar(this.num);
-            let question = surveyList[this.num].question;
-            let options = surveyList[this.num].options;
+            let question, options;
+
+            [question, options] = [surveyList[this.num].question, surveyList[this.num].options];
 
             this.num = this.num + 1;
 
@@ -119,7 +115,6 @@
 
             //array that contains all question numbers [1, 2, 3, ...]
             totalQuesNumber.push(this.num);
-            // console.log("question_num", totalQuesNumber);
 
             $("#ques-no").html(this.num);
             $("#question").html(question);
@@ -136,11 +131,12 @@
         },
 
         //function sets the radio buttons of options for questions
-        //@param array of options eg. ['yes, 'no];
+        //@param array of options eg. ['yes', 'no'];
         //@return string of options for each question for HTML
         getOptions: function(options) {
             let radio = '';
-            $(options).each(function(index, value) {
+            //@param index = index of object and value = options[]
+            $(options).each((index, value) => {
                 radio += `<label class="custom-control custom-radio col-sm-6">
                 <input id="radio_${index}" name="options" type="radio" value="${value}" class="custom-control-input cursor-radio">
                 <span class="custom-control-indicator"></span>
@@ -155,7 +151,6 @@
             // console.log("storeData() is called");
             //for question-options
             let checkedOption = $("input[name=options]:checked").val();
-            // console.log("checkedOption", checkedOption);
 
             if (typeof checkedOption === "undefined") {
                 console.log("Checked option is undefined");
@@ -164,12 +159,6 @@
                 choiceResult.push({
                     [this.num]: checkedOption
                 });
-
-                //array that stores attempted question numbers
-                // attemptedQuesNumber.push(this.num);
-
-                // let resultObj = Object.assign({}, ...choiceResult);
-                // console.log("finalResult", resultObj);
             }
 
             localStorage.setItem("choices", JSON.stringify(choiceResult));
@@ -181,22 +170,38 @@
             $("#survey-data").hide();
             $("#final-output").show();
 
+            let detailsOutput = '',
+                skipResult = [],
+                final = [],
+                output = '';
+
             let details = JSON.parse(localStorage.getItem("userdetails"));
 
-            $('#uname').html(details.name);
-            $('#uage').html(details.age);
-            $('#ugender').html(details.gender);
+            //@param val = index of object and detail = {name: '', age: '', gender: ''}
+            $(details).each((val, detail) => {
+                detailsOutput += `<div class="col-sm-4 ">
+                                    <label class="font-20 font-color"><b>NAME:</b></label><p class="py-2 font-18 font-select text-capitalize" id="uname">${detail.name}</p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label class="font-20 font-color"><b>AGE:</b></label><p class="py-2 font-18 font-select" id="uage">${detail.age}</p>
+                                </div>
+                                <div class="col-sm-4"><label class="font-20 font-color"><b>GENDER:</b>
+                                    </label><p class="py-2 font-18 font-select text-capitalize" id="ugender">${detail.gender}</p>
+                                </div>`;
+            });
+            $('.details').append(detailsOutput);
 
-            //array of object [{1: ""}, {2: ""}, ..]
+            //array of object [{"1": ""}, {"2": ""}, ...]
             let surveyResultList = JSON.parse(localStorage.getItem("choices"));
-            console.log("surveyResultList", surveyResultList);
 
             //creates attemptedQuesNumber[] for attempted questions
-            surveyResultList.forEach(function(obj) {
+            //@returns attemptedQuesNumber = [1, 2, ...]
+            surveyResultList.forEach((obj) => {
                 attemptedQuesNumber.push(Object.keys(obj).map(Number)[0]);
             });
-            // console.log(attemptedQuesNumber);
 
+            //function to find the difference between two arrays i.e. from totalQuesNumber and attemptedQuesNumber
+            //@param a = [1, 2, ...]
             Array.prototype.diff = function(a) {
                 return this.filter(function(i) {
                     return a.indexOf(i) === -1;
@@ -205,34 +210,30 @@
 
             unattemptedQuesNumber = totalQuesNumber.diff(attemptedQuesNumber);
 
-            //@returns array of object: [{2: N/A}, {5: N/A}, ...]
-            let skipResult = [];
-            unattemptedQuesNumber.forEach(function(index) {
+            //@returns array of object: [{2: "N/A"}, {5: "N/A"}, ...]
+            unattemptedQuesNumber.forEach((index) => {
                 skipResult.push({
                     [index]: "N/A"
                 });
             });
-            // console.log("skip", skipResult);
 
+            //@returns array of object: {1: "", 2: "N/A", ...}
             let finalResult = Object.assign({}, ...choiceResult, ...skipResult);
-            // console.log("finalResult", finalResult);
 
-            let final = [];
-            for(let i = 0; i < len; i++){
+            for (let i = 0; i < len; i++) {
                 final.push({
                     ques_num: Object.keys(finalResult)[i],
                     question: surveyList[i].question,
                     answer: Object.values(finalResult)[i]
                 });
             }
-            // console.log("final", final);
-            let output = '';
-            final.map(function(obj) {
+
+            //@param obj = [{ques_num: 1, question: "", answer: ""}, {ques_num: 2, question: "", answer: ""}, ...]
+            final.map((obj) => {
                 output += `<dl>
                                 <dt>Question ${obj.ques_num}.  ${obj.question}</dt>
                                 <dd class="font-select"><b>Answer:</b> ${obj.answer}</dd>
                              </dl>`;
-                //     console.log("Final output", output);
             });
             $('#result').append(output);
         }
