@@ -3,11 +3,7 @@
 
     localStorage.clear();
 
-    let choiceResult = [],
-        surveyList = [],
-        attemptedQuesNumber = [],
-        unattemptedQuesNumber = [],
-        totalQuesNumber = [];
+    let choiceResult = [], surveyList = [], attemptedQuesNumber = [], unattemptedQuesNumber = [], totalQuesNumber = [];
     let len = 0;
 
     $(function() {
@@ -170,10 +166,7 @@
             $("#survey-data").hide();
             $("#final-output").show();
 
-            let detailsOutput = '',
-                skipResult = [],
-                final = [],
-                output = '';
+            let detailsOutput = '', skipResult = [], final = [], output = '';
 
             let details = JSON.parse(localStorage.getItem("userdetails"));
 
